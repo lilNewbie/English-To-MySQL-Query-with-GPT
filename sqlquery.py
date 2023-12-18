@@ -11,7 +11,6 @@ st.title("Aloo_GPT")
 client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 GPT_MODEL = 'gpt-3.5-turbo-0613'
 
-
 def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL):
     
     json_data = {"message": messages[0]["content"]}
@@ -30,26 +29,7 @@ def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MO
         print(f"Exception: {e}")
         return e
 
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "sql_queries",
-            "description": "Generate SQL queries to find information from the given SQL table where the name of the person and the mood are the attributes.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "Query": {
-                        "type": "string",
-                        "description": "The SQL query, eg., select mood from mood_table where name=='Aloo'",
-                    }
-                },
-                "required":["Query"]
-            },
-        }
-    },]
 
-#code to load previous messages if any
 if 'openai_model' not in st.session_state:
     st.session_state['openai_model']="gpt-3.5-turbo"
 
@@ -69,10 +49,7 @@ if prompt := st.chat_input('Hello! What can I help you with?'):
 
     with st.chat_message('assistant'):
         message_placeholder = st.empty()
-        message_placeholder.markdown([st.session_state.messages[-1]])
-        full_response = chat_completion_request([st.session_state.messages[-1]], tools=tools)
-        #email_format = full_response.json()['choices'][0]['message']['tool_calls'][0]['function']['arguments']
-        
+        full_response = chat_completion_request([st.session_state.messages[-1]])
         message_placeholder.markdown(full_response)
 
     st.session_state.messages.append({'role':'assistant','content':full_response})
