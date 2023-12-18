@@ -48,6 +48,12 @@ client2 = AzureOpenAI(
     )
 ```
 
+Feel free to experiment with your own schema in the server.py file
+```python
+ msg_query = [{ "role": "system","content": f"Given the following SQL tables, your job is to write queries given a users request.{Your_Schema}"]
+    
+```
+
 Run the web-app
 
 ```bash
